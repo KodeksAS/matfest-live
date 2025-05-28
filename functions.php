@@ -234,6 +234,16 @@ function kodeks_refresh_cache_theme_page()
 }
 add_action('admin_init', 'kodeks_refresh_cache_theme_page');
 
+// ------------ Hero css ------------
+
+function enqueue_custom_styles()
+{
+  // Enqueue CSS
+  wp_enqueue_style('hero-style', get_stylesheet_directory_uri() . '/css/hero.css', [], filemtime(get_stylesheet_directory_uri() . '/css/hero.css'));
+}
+add_action('wp_enqueue_scripts', 'enqueue_custom_styles');
+
+
 // ------------ Locations tax for spilleplan ------------
 
 register_taxonomy(
