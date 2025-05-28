@@ -1,0 +1,47 @@
+{
+    "key": "group_62c43a4aecc7c",
+    "title": "Forside collage",
+    "fields": [
+        {
+            "key": "field_62c43a5a7dfcf",
+            "label": "Link",
+            "name": "wppm_custom_link",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "portfolio"
+            },
+            {
+                "param": "post_taxonomy",
+                "operator": "==",
+                "value": "portfolio_category:forside"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1748423861
+}

@@ -1,0 +1,80 @@
+{
+    "key": "group_6835bafd88ef1",
+    "title": "Spilleplan",
+    "fields": [
+        {
+            "key": "field_68346b4aa633d",
+            "label": "Dato",
+            "name": "plan_date",
+            "aria-label": "",
+            "type": "date_time_picker",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "display_format": "d.m.Y",
+            "return_format": "Ymd",
+            "first_day": 1,
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_68346bc1a633e",
+            "label": "Start tid",
+            "name": "plan_start_time",
+            "aria-label": "",
+            "type": "time_picker",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "display_format": "H:i",
+            "return_format": "H:i",
+            "allow_in_bindings": 0
+        },
+        {
+            "key": "field_68346be5a633f",
+            "label": "Slutt tid",
+            "name": "plan_end_time",
+            "aria-label": "",
+            "type": "time_picker",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "display_format": "H:i",
+            "return_format": "H:i",
+            "allow_in_bindings": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "arrangement"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1748423867
+}
