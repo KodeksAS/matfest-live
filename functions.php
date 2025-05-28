@@ -244,7 +244,7 @@ function enqueue_custom_styles()
 add_action('wp_enqueue_scripts', 'enqueue_custom_styles');
 
 
-// ------------ Locations tax for spilleplan ------------
+// ------------ New CPTs and taxonomies ------------
 
 register_taxonomy(
   'stage_location',
@@ -256,6 +256,19 @@ register_taxonomy(
     'show_admin_column' => true,
   ]
 );
+
+register_post_type('utstillere', [
+  'labels' => [
+    'name' => 'Utstillere',
+    'singular_name' => 'Utstiller',
+  ],
+  'public' => true,
+  'has_archive' => true,
+  'show_in_rest' => true,
+  'menu_icon' => 'dashicons-groups',
+  'supports' => ['title', 'editor', 'thumbnail', 'excerpt'],
+  'rewrite' => ['slug' => 'utstiller'],
+]);
 
 // ------------ Spilleplan stylesheet & JS ------------
 
