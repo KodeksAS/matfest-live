@@ -1,0 +1,174 @@
+/*
+Theme Name:   Movedo Child
+Theme URI:    http://themeforest.net/user/greatives
+Description:  Movedo Child Theme
+Version:      3.4.0
+Author:       Greatives Team
+Author URI:   http://greatives.eu
+GitHub Theme URI: https://github.com/KodeksAS/matfest-live
+Primary Branch: master
+Template:     movedo
+*/
+
+@font-face {
+  font-family: 'the_pyte_foundry_-moloch';
+  src: url('thepytefoundry--moloch.woff2') format('woff2'),
+    url('thepytefoundry--moloch.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+/* DESKTOP */
+
+.c-hero-element-d {
+  position: relative;
+  overflow: hidden;
+  display: block;
+}
+
+.c-hero-element-d .hero-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  height: 558px;
+}
+
+.c-hero-element-d .holder {
+  position: relative;
+}
+
+.c-hero-element-d .holder .bg-img {
+  height: 558px;
+  overflow: hidden;
+  display: block;
+}
+
+.c-hero-element-d .holder .bg-img img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.c-hero-element-d .holder .logos {
+  position: absolute;
+  top: 0;
+  display: flex;
+  height: 558px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 35px;
+}
+
+.c-hero-element-d .holder .logos img {
+  max-width: 200px;
+  max-height: 229px;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+
+/* MOBILE */
+
+.c-hero-element-m {
+  position: relative;
+  overflow: hidden;
+  display: none;
+}
+
+.c-hero-element-m .hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 558px;
+}
+
+.c-hero-element-m .holder {
+  position: relative;
+}
+
+.c-hero-element-m .holder .bg-img {
+  height: 558px;
+  overflow: hidden;
+  display: block;
+}
+
+.c-hero-element-m .holder .bg-img-m {
+  display: none;
+}
+
+.c-hero-element-m .holder .bg-img img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.c-hero-element-m .holder .logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.c-hero-element-m .holder .logo img {
+  max-width: 190px;
+  max-height: 217px;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@media screen and (max-width: 768px) {
+  .c-hero-element-d {
+    position: relative;
+    overflow: hidden;
+    display: none;
+  }
+
+  .c-hero-element-m {
+    position: relative;
+    overflow: hidden;
+    display: block;
+  }
+
+  .c-hero-element-m .hero-inner {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    height: 800px;
+  }
+
+  .c-hero-element-m .holder .bg-img {
+    height: 100%;
+    overflow: hidden;
+    display: none;
+  }
+
+  .c-hero-element-m .holder .bg-img-m {
+    height: 400px;
+    overflow: hidden;
+    display: block;
+  }
+
+
+  .c-hero-element-m .holder .bg-img-m img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+
+  .c-hero-element-m .holder .logo {
+    position: absolute;
+    bottom: unset;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+  }
+
+  .c-hero-element-m .holder .logo img {
+    max-width: 150px;
+    max-height: 174px;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
