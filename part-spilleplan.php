@@ -7,6 +7,7 @@
 
   $acf_timeline_end = get_field('spilleplan_timeline_end');
   if ($acf_timeline_end) {
+
     // If end time is less than or equal to start, assume it's next day
     $timeline_end = strtotime($acf_timeline_end);
     if ($timeline_end <= $timeline_start) {
@@ -20,7 +21,6 @@
   $timeline_minutes = ($timeline_end - $timeline_start) / 60;
   $grid_width = $timeline_minutes * $pixels_per_minute;
 
-  // Query arrangements
   $args = [
     'post_type' => 'arrangement',
     'posts_per_page' => -1,
@@ -113,8 +113,7 @@
         $next_marker = strtotime('+1 hour', $current_marker);
         $left = ($current_marker - $timeline_start) / 60 * $pixels_per_minute;
         $next_left = ($next_marker - $timeline_start) / 60 * $pixels_per_minute;
-        $width = $next_left - $left;
-      ?>
+        $width = $next_left - $left; ?>
         <div class="guideline" style="left: <?= $left; ?>px; width: <?= $width; ?>px;"></div>
       <?php
         $current_marker = $next_marker;

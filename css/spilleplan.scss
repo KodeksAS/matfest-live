@@ -3,23 +3,20 @@ $grey: #f0f0f0;
 $grey_transparent: rgba(0, 0, 0, 0.07);
 
 $location_width: 180px;
+$row_height: 80px;
+
+$location_width_mobile: 120px;
+$row_height_mobile: 60px;
 
 .spilleplan {
-  margin-block: 100px;
-
   .spilleplan-tabs {
-    margin-bottom: 30px;
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
-    gap: 20px;
 
     button.spilleplan-tab {
       background-color: $grey !important;
       border: none;
-      padding: 10px 20px !important;
-      font-size: 20px !important;
-      max-width: 133px;
       cursor: pointer;
       border-radius: 4px;
       font-weight: 700;
@@ -33,15 +30,20 @@ $location_width: 180px;
   }
 
   .spilleplan-wrapper {
-    overflow-x: auto;
-    // border-block: 3px solid black;
     position: relative;
     display: grid;
+    overflow-x: auto;
+    padding-right: 50px; // A bit of space for the last hour marker
+
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cpath d='M4 24h40M4 24l4-4M4 24l4 4M44 24l-4-4M44 24l-4 4' stroke='%23888' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='24' cy='24' r='6' fill='%23fff' stroke='%23888' stroke-width='2'/%3E%3C/svg%3E") 24 24, grab;
+
+    &.dragging {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cpath d='M4 24h40M4 24l4-4M4 24l4 4M44 24l-4-4M44 24l-4 4' stroke='%23888' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='24' cy='24' r='6' fill='%23fff' stroke='%23888' stroke-width='2'/%3E%3Ccircle cx='24' cy='24' r='12' fill='none' stroke='%23ff8272' stroke-width='2'/%3E%3C/svg%3E") 24 24, grabbing;
+    }
 
     .time-header {
       position: relative;
       height: 40px;
-      margin-left: $location_width; // Adjust for the location column
       grid-row: 1;
       grid-column: 1 / -1;
 
@@ -50,7 +52,6 @@ $location_width: 180px;
         top: 0;
         text-align: center;
         transform: translateX(-50%);
-        font-size: 20px;
         color: black;
         padding-top: 10px;
         font-weight: 700;
@@ -72,8 +73,6 @@ $location_width: 180px;
         }
 
         .location {
-          width: $location_width;
-          height: 80px;
           position: sticky;
           left: 0;
           background: rgba(0, 0, 0, 0.7);
@@ -90,7 +89,6 @@ $location_width: 180px;
 
         .events {
           position: relative;
-          height: 80px;
           flex-grow: 1;
 
           .sp-event {
@@ -134,7 +132,6 @@ $location_width: 180px;
                 justify-content: center;
 
                 h4 {
-                  font-size: 16px;
                   line-height: 1.2;
                   margin-bottom: 0;
                   color: #fff;
@@ -164,7 +161,6 @@ $location_width: 180px;
     .guidelines {
       grid-column: 1 / -1;
       grid-row: 2;
-      margin-left: $location_width; // Adjust for the location column
       height: 100%;
       z-index: 1;
       pointer-events: none;
@@ -175,14 +171,122 @@ $location_width: 180px;
         top: 0;
         height: 100%;
 
+        &::before {
+          content: "";
+          position: absolute;
+          left: 50%;
+          top: 0;
+          width: 1px;
+          height: 100%;
+          border-left: 1px dashed rgba(0, 0, 0, 0.2);
+          pointer-events: none;
+          z-index: 2;
+        }
+
         &:nth-child(odd) {
           background: $grey_transparent;
         }
 
-        // &:not(:first-child) {
-        //   border-left: 1px solid black;
-        // }
+        &:not(:first-child) {
+          border-left: 1px solid black;
+        }
 
+      }
+    }
+  }
+
+  // Desktop only styles
+  @media (min-width: 769px) {
+    margin-block: 100px;
+
+    .spilleplan-tabs {
+      margin-bottom: 30px;
+      gap: 20px;
+
+      button.spilleplan-tab {
+        padding: 10px 20px !important;
+        font-size: 20px !important;
+        max-width: 133px;
+      }
+    }
+
+    .spilleplan-wrapper {
+      .time-header {
+        margin-left: $location_width;
+
+        .hour-marker {
+          font-size: 20px;
+        }
+
+      }
+
+      .location {
+        width: $location_width;
+        height: $row_height;
+      }
+
+      .events {
+        height: $row_height;
+
+        .sp-event a .text-wrapper {
+
+          h4,
+          span.time {
+            font-size: 16px;
+          }
+        }
+      }
+
+      .guidelines {
+        margin-left: $location_width;
+      }
+    }
+  }
+
+  // Mobile only styles
+  @media (max-width: 768px) {
+    margin-block: 70px;
+
+    .spilleplan-tabs {
+      margin-bottom: 20px;
+      gap: 10px;
+
+      button.spilleplan-tab {
+        padding: 8px 12px !important;
+        font-size: 14px !important;
+        max-width: 88px;
+      }
+    }
+
+    .spilleplan-wrapper {
+      .time-header {
+        margin-left: $location_width_mobile;
+
+        .hour-marker {
+          font-size: 18px;
+        }
+      }
+
+      .location {
+        width: $location_width_mobile;
+        font-size: 14px;
+        height: $row_height_mobile;
+      }
+
+      .events {
+        height: $row_height_mobile;
+
+        .sp-event a .text-wrapper {
+
+          h4,
+          span.time {
+            font-size: 14px;
+          }
+        }
+      }
+
+      .guidelines {
+        margin-left: $location_width_mobile;
       }
     }
   }
