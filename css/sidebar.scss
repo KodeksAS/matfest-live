@@ -1,0 +1,12 @@
+.wysiwyg-sidebar {
+  margin-bottom: 50px;
+
+  p, ul li, ol li {
+    font-size: 17px !important;
+    line-height: 1.5 !important;
+    
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+  }
+}

@@ -43,7 +43,7 @@
           wp_link_pages(); //Post Pagination
           ?>
 
-          <div class="grve-container">
+          <div class="grve-container" style="margin-top: 60px;">
 
             <h3 class="grve-element grve-title grve-align-center grve-h3">
               <span>Restauranter</span>

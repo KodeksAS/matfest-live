@@ -234,12 +234,13 @@ function kodeks_refresh_cache_theme_page()
 }
 add_action('admin_init', 'kodeks_refresh_cache_theme_page');
 
-// ------------ Hero css ------------
+// ------------ CSS ------------
 
 function enqueue_custom_styles()
 {
-  // Enqueue CSS
   wp_enqueue_style('hero-style', get_stylesheet_directory_uri() . '/css/hero.css', [], filemtime(get_stylesheet_directory_uri() . '/css/hero.css'));
+    wp_enqueue_style('sidebar-style', get_stylesheet_directory_uri() . '/css/sidebar.css', [], filemtime(get_stylesheet_directory_uri() . '/css/sidebar.css'));
+
 }
 add_action('wp_enqueue_scripts', 'enqueue_custom_styles');
 
@@ -323,7 +324,7 @@ function kodeks_post_types()
       ),
       'public' => true,
       'has_archive' => false,
-      'supports' => array('title', 'editor', 'thumbnail', 'excerpt'),
+      'supports' => array('title', 'editor', 'thumbnail', 'excerpt', 'vc_editor'),
       'exclude_from_search' => false,
       'show_in_rest' => true,
       'menu_icon' => 'dashicons-food',

@@ -2,26 +2,7 @@
   #grve-main-content .grve-main-content-wrapper,
   #grve-sidebar {
     padding-top: 0px;
-    padding-bottom: 90px;
-    background: #fff;
-  }
-
-  .grve-section {
-    background: #fff !important;
-  }
-
-  .grve-leader-text blockquote p {
-    font-family: Georgia, serif;
-    font-weight: 400;
-    font-style: italic;
-    font-size: 24px;
-    line-height: 40px;
-    text-transform: none;
-    letter-spacing: 0px;
-  }
-
-  li::marker {
-    color: #104b65;
+    padding-bottom: 60px;
   }
 </style>
 
@@ -65,16 +46,21 @@
                   <div class="grve-container">
                     <div class="grve-element grve-text grve-leader-text">
 
-                      <?php
-                      $link = get_field('restaurant_link');
-                      if ($link) : $link_target = $link["target"] ? $link["target"] : "_self"; ?>
-                        <div class="link-wrap">
-                          <a class="grve-btn grve-btn-large grve-square grve-bg-primary-6 grve-bg-hover-primary-3" href="<?= esc_url($link["url"]); ?>" target="<?= esc_attr($link_target); ?>"><?= esc_html($link["title"]); ?></a>
+                      <?php $sidebar_text = get_field('sidebar_text');
+                      if ($sidebar_text) : ?>
+                        <div class="wysiwyg-sidebar">
+                          <?= $sidebar_text; ?>
                         </div>
                       <?php endif; ?>
 
-                      <?php // get_field('bilde2') 
-                      ?>
+                      <?php
+                      $sidebar_link = get_field('sidebar_link');
+                      if ($sidebar_link) : $sidebar_link_target = $sidebar_link["target"] ? $sidebar_link["target"] : "_self"; ?>
+                        <div class="link-wrap">
+                          <a class="grve-btn grve-btn-large grve-square grve-bg-primary-6 grve-bg-hover-primary-3" href="<?= esc_url($sidebar_link["url"]); ?>" target="<?= esc_attr($sidebar_link_target); ?>"><?= esc_html($sidebar_link["title"]); ?></a>
+                        </div>
+                      <?php endif; ?>
+
                     </div>
                     <br />
                     Del på Facebook
@@ -84,21 +70,27 @@
                 </div>
               </div>
 
-              <div class="grve-column wpb_column grve-column-3-4 grve-padding-bottom-2x">
-                <div class="grve-column-wrapper">
 
-                  <div class="grve-element grve-text grve-leader-text">
-                   
-                    <?php the_content(); ?>
 
+              <?php $main_wysiwyg = get_field('main_content_wysiwyg');
+              if ($main_wysiwyg) : ?>
+                <div class="grve-column wpb_column grve-column-3-4 grve-padding-bottom-2x">
+                  <div class="grve-column-wrapper">
+                    <div class="grve-element grve-text grve-leader-text">
+                      <?= $main_wysiwyg; ?>
+                    </div>
                   </div>
                 </div>
-              </div>
+              <?php endif; ?>
+
+
             </div>
           </div>
 
 
         </div>
+
+        <?php the_content(); ?>
 
   </article>
 

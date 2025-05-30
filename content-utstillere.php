@@ -65,16 +65,20 @@
                   <div class="grve-container">
                     <div class="grve-element grve-text grve-leader-text">
 
-                      <?php
-                      $link = get_field('utstiller_link');
+                      <?php $wysiwyg_sidebar = get_field('wysiwyg_sidebar');
+                      if ($wysiwyg_sidebar) : ?>
+                        <div class="wysiwyg-sidebar">
+                          <?= $wysiwyg_sidebar; ?>
+                        </div>
+                      <?php endif; ?>
+
+                      <?php $link = get_field('utstiller_link');
                       if ($link) : $link_target = $link["target"] ? $link["target"] : "_self"; ?>
                         <div class="link-wrap">
                           <a class="grve-btn grve-btn-large grve-square grve-bg-primary-6 grve-bg-hover-primary-3" href="<?= esc_url($link["url"]); ?>" target="<?= esc_attr($link_target); ?>"><?= esc_html($link["title"]); ?></a>
                         </div>
                       <?php endif; ?>
 
-                      <?php // get_field('bilde2') 
-                      ?>
                     </div>
                     <br />
                     Del på Facebook
