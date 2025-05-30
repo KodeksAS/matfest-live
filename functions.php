@@ -246,29 +246,93 @@ add_action('wp_enqueue_scripts', 'enqueue_custom_styles');
 
 // ------------ New CPTs and taxonomies ------------
 
-register_taxonomy(
-  'stage_location',
-  'arrangement',
-  [
-    'label' => 'Locations',
-    'hierarchical' => true,
-    'show_in_rest' => true,
-    'show_admin_column' => true,
-  ]
-);
+function kodeks_post_types()
+{
 
-register_post_type('utstillere', [
-  'labels' => [
-    'name' => 'Utstillere',
-    'singular_name' => 'Utstiller',
-  ],
-  'public' => true,
-  'has_archive' => true,
-  'show_in_rest' => true,
-  'menu_icon' => 'dashicons-groups',
-  'supports' => ['title', 'editor', 'thumbnail', 'excerpt'],
-  'rewrite' => ['slug' => 'utstiller'],
-]);
+  // Taxonomies:
+  register_taxonomy(
+    'stage_location',
+    array('arrangement'),
+    [
+      'label' => __('Locations'),
+      'hierarchical' => true,
+      'show_admin_column' => true,
+      'show_in_rest' => true,
+    ]
+  );
+
+  // Post types:
+  register_post_type(
+    'utstillere',
+
+    array(
+      'labels' => array(
+        'name' => __('Utstillere', 'matfest'),
+        'singular_name' => __('Utstiller', 'matfest'),
+        'add_new_item' => __('Legg til ny utstiller', 'matfest'),
+        'edit_item' => __('Rediger utstiller', 'matfest'),
+        'new_item' => __('Ny utstiller', 'matfest'),
+        'view_item' => __('Vis utstiller', 'matfest'),
+        'view_items' => __('Vis utstillere', 'matfest'),
+        'search_items' => __('Søk utstillere', 'matfest'),
+        'not_found' => __('Ingen utstillere funnet', 'matfest'),
+        'not_found_in_trash' => __('Ingen utstillere funnet i papirkurven', 'matfest'),
+        'all_items' => __('Alle utstillere', 'matfest'),
+        'archives' => __('Utstillerarkiv', 'matfest'),
+        'attributes' => __('Utstillerattributter', 'matfest'),
+        'insert_into_item' => __('Sett inn i utstiller', 'matfest'),
+        'uploaded_to_this_item' => __('Lastet opp til denne utstilleren', 'matfest'),
+        'filter_items_list' => __('Filtrer utstillerliste', 'matfest'),
+        'items_list_navigation' => __('Navigasjon i utstillerliste', 'matfest'),
+        'items_list' => __('Utstillerliste', 'matfest'),
+      ),
+      'public' => true,
+      'has_archive' => false,
+      // 'rewrite' => array('slug' => 'utstiller', 'with_front' => false),
+      'supports' => array('title', 'editor', 'thumbnail', 'excerpt'),
+      'exclude_from_search' => false,
+      'show_in_rest' => true,
+      'menu_icon' => 'dashicons-groups',
+    )
+  );
+
+  register_post_type(
+    'restauranter',
+
+    array(
+      'labels' => array(
+        'name' => __('Restauranter', 'matfest'),
+        'singular_name' => __('Restaurant', 'matfest'),
+        'add_new_item' => __('Legg til ny restaurant', 'matfest'),
+        'edit_item' => __('Rediger restaurant', 'matfest'),
+        'new_item' => __('Ny restaurant', 'matfest'),
+        'view_item' => __('Vis restaurant', 'matfest'),
+        'view_items' => __('Vis restauranter', 'matfest'),
+        'search_items' => __('Søk restauranter', 'matfest'),
+        'not_found' => __('Ingen restauranter funnet', 'matfest'),
+        'not_found_in_trash' => __('Ingen restauranter funnet i papirkurven', 'matfest'),
+        'all_items' => __('Alle restauranter', 'matfest'),
+        'archives' => __('Restaurantarkiv', 'matfest'),
+        'attributes' => __('Restaurantattributter', 'matfest'),
+        'insert_into_item' => __('Sett inn i restaurant', 'matfest'),
+        'uploaded_to_this_item' => __('Lastet opp til denne restauranten', 'matfest'),
+
+        'filter_items_list' => __('Filtrer restaurantliste', 'matfest'),
+        'items_list_navigation' => __('Navigasjon i restaurantliste', 'matfest'),
+        'items_list' => __('Restaurantliste', 'matfest'),
+      ),
+      'public' => true,
+      'has_archive' => false,
+      'supports' => array('title', 'editor', 'thumbnail', 'excerpt'),
+      'exclude_from_search' => false,
+      'show_in_rest' => true,
+      'menu_icon' => 'dashicons-food',
+    )
+  );
+}
+add_action('init', 'kodeks_post_types');
+
+
 
 // ------------ Spilleplan stylesheet & JS ------------
 

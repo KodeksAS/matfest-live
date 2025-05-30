@@ -66,7 +66,7 @@
                     <div class="grve-element grve-text grve-leader-text">
 
                       <?php
-                      $link = get_field('utstiller_link');
+                      $link = get_field('restaurant_link');
                       if ($link) : $link_target = $link["target"] ? $link["target"] : "_self"; ?>
                         <div class="link-wrap">
                           <a class="grve-btn grve-btn-large grve-square grve-bg-primary-6 grve-bg-hover-primary-3" href="<?= esc_url($link["url"]); ?>" target="<?= esc_attr($link_target); ?>"><?= esc_html($link["title"]); ?></a>

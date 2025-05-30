@@ -39,17 +39,17 @@
         <div class="grve-main-content-wrapper clearfix">
           
           <?php
-          get_template_part('content-utstillere', get_post_format());
+          get_template_part('content-restauranter', get_post_format());
           wp_link_pages(); //Post Pagination
           ?>
 
           <div class="grve-container">
 
             <h3 class="grve-element grve-title grve-align-center grve-h3">
-              <span>Utstillere</span>
+              <span>Restauranter</span>
             </h3>
 
-            <?php echo do_shortcode('[vc_row][vc_column][wppm post_type="utstillere" post_status="" num="50" terms="" hide_current_post="true" enable_slider="true" items="3" loop="true" animatein="" animateout="" imgwidth="600" imgheight="400" imgquality="85" xclass="no-border" hide_author="true" hide_date="true" hide_excerpt="true"  ad_list="%5B%7B%7D%5D"][/vc_column][/vc_row]'); ?>
+            <?php echo do_shortcode('[vc_row][vc_column][wppm post_type="restauranter" post_status="" num="50" terms="" hide_current_post="true" enable_slider="true" items="3" loop="true" animatein="" animateout="" imgwidth="600" imgheight="400" imgquality="85" xclass="no-border" hide_author="true" hide_date="true" hide_excerpt="true" ad_list="%5B%7B%7D%5D"][/vc_column][/vc_row]'); ?>
 
             <?php movedo_grve_print_post_tags(); ?>
             <?php movedo_grve_print_post_about_author('overview'); ?>
