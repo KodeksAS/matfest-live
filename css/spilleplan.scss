@@ -197,8 +197,6 @@ $row_height_mobile: 60px;
 
   // Desktop only styles
   @media (min-width: 769px) {
-    margin-block: 100px;
-
     .spilleplan-tabs {
       margin-bottom: 30px;
       gap: 20px;
@@ -245,8 +243,6 @@ $row_height_mobile: 60px;
 
   // Mobile only styles
   @media (max-width: 768px) {
-    margin-block: 70px;
-
     .spilleplan-tabs {
       margin-bottom: 20px;
       gap: 10px;
