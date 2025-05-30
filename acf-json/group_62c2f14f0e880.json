@@ -3,7 +3,7 @@
     "title": "Arrangement",
     "fields": [
         {
-            "key": "field_62c2f162f1614",
+            "key": "field_68397d8eff50a",
             "label": "Dato",
             "name": "dato",
             "aria-label": "",
@@ -292,5 +292,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1748436046
+    "modified": 1748598331
 }
