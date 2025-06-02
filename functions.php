@@ -239,8 +239,7 @@ add_action('admin_init', 'kodeks_refresh_cache_theme_page');
 function enqueue_custom_styles()
 {
   wp_enqueue_style('hero-style', get_stylesheet_directory_uri() . '/css/hero.css', [], filemtime(get_stylesheet_directory_uri() . '/css/hero.css'));
-    wp_enqueue_style('sidebar-style', get_stylesheet_directory_uri() . '/css/sidebar.css', [], filemtime(get_stylesheet_directory_uri() . '/css/sidebar.css'));
-
+  wp_enqueue_style('sidebar-style', get_stylesheet_directory_uri() . '/css/sidebar.css', [], filemtime(get_stylesheet_directory_uri() . '/css/sidebar.css'));
 }
 add_action('wp_enqueue_scripts', 'enqueue_custom_styles');
 
@@ -301,7 +300,6 @@ function kodeks_post_types()
 add_action('init', 'kodeks_post_types');
 
 
-
 // ------------ Spilleplan stylesheet & JS ------------
 
 function enqueue_spilleplan_styles()
@@ -355,3 +353,93 @@ function add_spilleplan_date_column($columns)
 }
 add_filter('manage_posts_columns', 'add_spilleplan_date_column');
 add_action('manage_posts_custom_column', 'spilleplan_date_column_content', 10, 2);
+
+// ------------ VC Custom Element ------------
+
+add_action('vc_before_init', 'custom_post_grid_vc_element');
+function custom_post_grid_vc_element()
+{
+  vc_map(array(
+    'name' => __('Custom Post Grid', 'matfest'),
+    'base' => 'custom_post_grid',
+    'icon' => plugins_url('wp-post-modules/assets/images/wppm.svg'), // Use custom SVG icon from plugin
+    'category' => __('Content', 'js_composer'),
+    'params' => array(
+      array(
+        'type' => 'param_group',
+        'heading' => __('Grid Items', 'matfest'),
+        'param_name' => 'items',
+        'description' => __('Legg til en ny rad for hvert bilde/link i gridet. Åpne raden for å redigere ved å klikke på pilen.', 'matfest'),
+        'params' => array(
+          array(
+            'type' => 'attach_image',
+            'heading' => __('Image', 'matfest'),
+            'param_name' => 'image',
+          ),
+          array(
+            'type' => 'textfield',
+            'heading' => __('Title', 'matfest'),
+            'param_name' => 'title',
+          ),
+          array(
+            'type' => 'textfield',
+            'heading' => __('Link URL', 'matfest'),
+            'param_name' => 'link',
+          ),
+          array(
+            'type' => 'checkbox',
+            'heading' => __('Open link in new tab?', 'matfest'),
+            'param_name' => 'link_external',
+            'value' => array(__('Yes', 'matfest') => 'yes'),
+            'description' => __('If checked, the link will open in a new tab.', 'matfest'),
+          ),
+        ),
+      ),
+    )
+  ));
+}
+
+add_shortcode('custom_post_grid', function ($atts) {
+  $atts = shortcode_atts(array(
+    'items' => '',
+  ), $atts);
+
+  $items = vc_param_group_parse_atts($atts['items']);
+  if (!$items) return '';
+
+  $output = '<div class="custom-post-grid">';
+  foreach ($items as $item) {
+    $img_html = '';
+    if (!empty($item['image'])) {
+      $img_url = wp_get_attachment_image_url($item['image'], 'medium');
+      $img_html = '<div class="item-img"><img src="' . esc_url($img_url) . '" alt="' . esc_attr($item['title'] ?? '') . '" /></div>';
+    }
+    $title_html = !empty($item['title']) ? '<div class="bottom"><h3>' . esc_html($item['title']) . '</h3></div>' : '';
+    $link_attrs = '';
+    if (!empty($item['link_external']) && $item['link_external'] === 'yes') {
+      $link_attrs = ' target="_blank" rel="noopener"';
+    }
+    $link_start = !empty($item['link']) ? '<a href="' . esc_url($item['link']) . '"' . $link_attrs . '>' : '';
+    $link_end = !empty($item['link']) ? '</a>' : '';
+
+    $output .= '<div class="item">' . $link_start . '<div class="item-inner">' . $img_html . '<div class="item-content">' . $title_html . '</div></div>' . $link_end . '</div>';
+  }
+  $output .= '</div>';
+  return $output;
+});
+
+
+
+// ------ Css for custom post grid ------
+
+function enqueue_custom_post_grid_css() {
+  if (has_shortcode(get_post_field('post_content', get_the_ID()), 'custom_post_grid')) {
+    wp_enqueue_style(
+      'custom-post-grid-style',
+      get_stylesheet_directory_uri() . '/css/custom-post-grid.css',
+      [],
+      filemtime(get_stylesheet_directory() . '/css/custom-post-grid.css')
+    );
+  }
+}
+add_action('wp_enqueue_scripts', 'enqueue_custom_post_grid_css');
