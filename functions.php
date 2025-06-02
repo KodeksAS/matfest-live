@@ -304,8 +304,8 @@ add_action('init', 'kodeks_post_types');
 
 function enqueue_spilleplan_styles()
 {
-  if (is_page_template('template-spilleplan.php')) {
-
+  // Check if the current post contains the [spilleplan_element] shortcode
+  if (has_shortcode(get_post_field('post_content', get_the_ID()), 'spilleplan_element')) {
     // Enqueue CSS
     wp_enqueue_style('spilleplan-style', get_stylesheet_directory_uri() . '/css/spilleplan.css', [], filemtime(get_stylesheet_directory_uri() . '/css/spilleplan.css'));
 
@@ -443,3 +443,31 @@ function enqueue_custom_post_grid_css() {
   }
 }
 add_action('wp_enqueue_scripts', 'enqueue_custom_post_grid_css');
+
+// ------------ VC Spilleplan Element ------------
+
+add_action('vc_before_init', 'vc_spilleplan_element');
+function vc_spilleplan_element() {
+  vc_map(array(
+    'name' => __('Spilleplan', 'matfest'),
+    'base' => 'spilleplan_element',
+    'category' => __('Content', 'js_composer'),
+    'description' => __('Setter inn spilleplanen', 'matfest'),
+    'params' => array(
+      array(
+        'type' => 'raw_html',
+        'heading' => __('Spilleplan', 'matfest'),
+        'param_name' => 'info',
+        'value' => '',
+        'description' => '<div class="vc_message_box vc_message_box-info">Dette elementet setter inn spilleplanen på denne siden. Innhold legges inn på hvert arrangement.</div>',
+        'edit_field_class' => 'vc_col-sm-12',
+      ),
+    ),
+  ));
+}
+
+add_shortcode('spilleplan_element', function($atts) {
+  ob_start();
+  get_template_part('part-spilleplan');
+  return ob_get_clean();
+});
