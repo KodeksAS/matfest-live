@@ -30,10 +30,10 @@ get_header(); ?>
             <?php get_template_part('part-hero'); ?>
             <?php the_content(); ?>
 
+            <?php get_template_part('part-spilleplan'); ?>
+
           </div>
           <!-- END PAGE CONTENT -->
-
-          <?php get_template_part('part-spilleplan'); ?>
 
           <?php if (movedo_grve_visibility('page_comments_visibility')) : ?>
             <div class="grve-container">
