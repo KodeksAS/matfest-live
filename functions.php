@@ -263,39 +263,6 @@ function kodeks_post_types()
   );
 
   // Post types:
-  register_post_type(
-    'utstillere',
-
-    array(
-      'labels' => array(
-        'name' => __('Utstillere', 'matfest'),
-        'singular_name' => __('Utstiller', 'matfest'),
-        'add_new_item' => __('Legg til ny utstiller', 'matfest'),
-        'edit_item' => __('Rediger utstiller', 'matfest'),
-        'new_item' => __('Ny utstiller', 'matfest'),
-        'view_item' => __('Vis utstiller', 'matfest'),
-        'view_items' => __('Vis utstillere', 'matfest'),
-        'search_items' => __('Søk utstillere', 'matfest'),
-        'not_found' => __('Ingen utstillere funnet', 'matfest'),
-        'not_found_in_trash' => __('Ingen utstillere funnet i papirkurven', 'matfest'),
-        'all_items' => __('Alle utstillere', 'matfest'),
-        'archives' => __('Utstillerarkiv', 'matfest'),
-        'attributes' => __('Utstillerattributter', 'matfest'),
-        'insert_into_item' => __('Sett inn i utstiller', 'matfest'),
-        'uploaded_to_this_item' => __('Lastet opp til denne utstilleren', 'matfest'),
-        'filter_items_list' => __('Filtrer utstillerliste', 'matfest'),
-        'items_list_navigation' => __('Navigasjon i utstillerliste', 'matfest'),
-        'items_list' => __('Utstillerliste', 'matfest'),
-      ),
-      'public' => true,
-      'has_archive' => false,
-      // 'rewrite' => array('slug' => 'utstiller', 'with_front' => false),
-      'supports' => array('title', 'editor', 'thumbnail', 'excerpt'),
-      'exclude_from_search' => false,
-      'show_in_rest' => true,
-      'menu_icon' => 'dashicons-groups',
-    )
-  );
 
   register_post_type(
     'restauranter',

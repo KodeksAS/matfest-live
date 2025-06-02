@@ -44,6 +44,9 @@
               <div class="grve-column wpb_column grve-column-1-4 grve-bg-none">
                 <div class="grve-column-wrapper">
                   <div class="grve-container">
+
+                    <h3 class="grve-element grve-title grve-align-left grve-h2"><span>FAKTA</span></h3>
+
                     <div class="grve-element grve-text grve-leader-text">
 
                       <?php $sidebar_text = get_field('sidebar_text');
