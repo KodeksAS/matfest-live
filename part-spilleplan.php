@@ -2,10 +2,10 @@
 
   <?php
   // Timeline range and scaling
-  $acf_timeline_start = get_field('spilleplan_timeline_start');
+  $acf_timeline_start = get_field('spilleplan_timeline_start', 'options');
   $timeline_start = $acf_timeline_start ? strtotime($acf_timeline_start) : strtotime('08:00');
 
-  $acf_timeline_end = get_field('spilleplan_timeline_end');
+  $acf_timeline_end = get_field('spilleplan_timeline_end', 'options');
   if ($acf_timeline_end) {
 
     // If end time is less than or equal to start, assume it's next day

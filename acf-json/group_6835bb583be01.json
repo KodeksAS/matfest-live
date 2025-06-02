@@ -42,9 +42,9 @@
     "location": [
         [
             {
-                "param": "page_template",
+                "param": "options_page",
                 "operator": "==",
-                "value": "template-spilleplan.php"
+                "value": "acf-options"
             }
         ]
     ],
@@ -57,5 +57,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1748423868
+    "modified": 1748858028
 }
