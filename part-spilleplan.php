@@ -78,7 +78,7 @@
 
   <div class="spilleplan-tabs">
     <?php foreach ($future_events_by_date as $date => $events) : ?>
-      <button class="spilleplan-tab" data-date="<?= esc_attr($date); ?>"><?= esc_html(date_i18n('l j. F', strtotime($date))); ?></button>
+      <button class="spilleplan-tab" data-date="<?= esc_attr($date); ?>"><?= esc_html(date_i18n('l j. M', strtotime($date))); ?></button>
     <?php endforeach; ?>
   </div>
 
