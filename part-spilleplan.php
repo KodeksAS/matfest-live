@@ -18,7 +18,7 @@
     $timeline_end = strtotime('01:00 +1 day', $timeline_start); // fallback
   }
 
-  $pixels_per_minute = 3;
+  $pixels_per_minute = 2;
   $timeline_minutes = ($timeline_end - $timeline_start) / 60;
   $grid_width = $timeline_minutes * $pixels_per_minute;
 
