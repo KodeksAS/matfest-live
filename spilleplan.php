@@ -8,7 +8,7 @@ function spilleplan_shortcode()
   // Timeline range and scaling
   $timeline_start = strtotime('08:00');
   $timeline_end = strtotime('01:00 +1 day'); // 1am the next day
-  $pixels_per_minute = 2;
+  $pixels_per_minute = 3;
   $timeline_minutes = ($timeline_end - $timeline_start) / 60;
   $grid_width = $timeline_minutes * $pixels_per_minute;
 
