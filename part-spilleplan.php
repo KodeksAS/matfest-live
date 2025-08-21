@@ -1,6 +1,7 @@
 <div class="spilleplan">
 
   <?php
+  $manually_set_active_date = get_field('plan_date_active', 'options');
   // Timeline range and scaling
   $acf_timeline_start = get_field('spilleplan_timeline_start', 'options');
   $timeline_start = $acf_timeline_start ? strtotime($acf_timeline_start) : strtotime('08:00');
@@ -74,9 +75,14 @@
   if (empty($future_events_by_date)) {
     $future_events_by_date = $events_by_date;
   }
-  ?>
+  // Check if manually set date matches a tab
+  $default_date_attr = '';
+  if ($manually_set_active_date && isset($future_events_by_date[$manually_set_active_date])) {
+    $default_date_attr = ' data-default-date="' . esc_attr($manually_set_active_date) . '"';
+  }
+?>
 
-  <div class="spilleplan-tabs">
+  <div class="spilleplan-tabs"<?= $default_date_attr; ?>>
     <?php foreach ($future_events_by_date as $date => $events) : ?>
       <button class="spilleplan-tab" data-date="<?= esc_attr($date); ?>"><?= esc_html(date_i18n('l j. M', strtotime($date))); ?></button>
     <?php endforeach; ?>

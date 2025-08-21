@@ -34,7 +34,15 @@ document.addEventListener('DOMContentLoaded', function () {
   if (urlDate) {
     activated = activateTab(urlDate);
   }
-  // Fallback to first tab if no valid dato param
+  // Fallback to default date from data-default-date attribute
+  if (!activated && tabs.length) {
+    const tabsContainer = document.querySelector('.spilleplan-tabs');
+    const defaultDate = tabsContainer ? tabsContainer.getAttribute('data-default-date') : null;
+    if (defaultDate && activateTab(defaultDate)) {
+      activated = true;
+    }
+  }
+  // Fallback to first tab if no valid dato param or default date
   if (!activated && tabs.length) {
     tabs[0].classList.add('active');
     showEvents(tabs[0].dataset.date);
