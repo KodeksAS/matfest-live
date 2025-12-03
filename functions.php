@@ -238,8 +238,12 @@ add_action('admin_init', 'kodeks_refresh_cache_theme_page');
 
 function enqueue_custom_styles()
 {
-  wp_enqueue_style('hero-style', get_stylesheet_directory_uri() . '/css/hero.css', [], filemtime(get_stylesheet_directory_uri() . '/css/hero.css'));
-  wp_enqueue_style('sidebar-style', get_stylesheet_directory_uri() . '/css/sidebar.css', [], filemtime(get_stylesheet_directory_uri() . '/css/sidebar.css'));
+  wp_enqueue_style('hero-style', get_stylesheet_directory_uri() . '/css/hero.css', [], filemtime(get_stylesheet_directory() . '/css/hero.css'));
+  wp_enqueue_style('sidebar-style', get_stylesheet_directory_uri() . '/css/sidebar.css', [], filemtime(get_stylesheet_directory() . '/css/sidebar.css'));
+  wp_enqueue_style('festival-style', get_stylesheet_directory_uri() . '/css/festival-tabs-etc.css', [], filemtime(get_stylesheet_directory() . '/css/festival-tabs-etc.css'));
+
+  // Enqueue festival tabs mobile JavaScript
+  wp_enqueue_script('festival-tabs-mobile', get_stylesheet_directory_uri() . '/js/festival-tabs-mobile.js', [], filemtime(get_stylesheet_directory() . '/js/festival-tabs-mobile.js'), true);
 }
 add_action('wp_enqueue_scripts', 'enqueue_custom_styles');
 
@@ -432,7 +436,8 @@ add_shortcode('custom_post_grid', function ($atts) {
 
 // ------ Css for custom post grid ------
 
-function enqueue_custom_post_grid_css() {
+function enqueue_custom_post_grid_css()
+{
   if (has_shortcode(get_post_field('post_content', get_the_ID()), 'custom_post_grid')) {
     wp_enqueue_style(
       'custom-post-grid-style',
@@ -447,7 +452,8 @@ add_action('wp_enqueue_scripts', 'enqueue_custom_post_grid_css');
 // ------------ VC Spilleplan Element ------------
 
 add_action('vc_before_init', 'vc_spilleplan_element');
-function vc_spilleplan_element() {
+function vc_spilleplan_element()
+{
   vc_map(array(
     'name' => __('Spilleplan', 'matfest'),
     'base' => 'spilleplan_element',
@@ -466,8 +472,289 @@ function vc_spilleplan_element() {
   ));
 }
 
-add_shortcode('spilleplan_element', function($atts) {
+add_shortcode('spilleplan_element', function ($atts) {
   ob_start();
   get_template_part('part-spilleplan');
   return ob_get_clean();
+});
+
+
+
+// ------------ Label festival pages in admin ------------
+
+// // Add custom column to Pages list
+// add_filter('manage_page_posts_columns', function($columns) {
+//   $new_columns = [];
+//   foreach ($columns as $key => $value) {
+//     $new_columns[$key] = $value;
+//     // Add after the title column
+//     if ($key === 'title') {
+//       $new_columns['main_festival_page'] = __('Festivalside', 'matfest');
+//     }
+//   }
+//   return $new_columns;
+// });
+
+// // Populate the custom column
+// add_action('manage_page_posts_custom_column', function($column, $post_id) {
+//   if ($column === 'main_festival_page') {
+//     $is_main_festival_page = get_field('main_festival_page', $post_id);
+//     if ($is_main_festival_page) {
+//       echo '<span style="color: #46b450; font-weight: bold; font-size: 20px;">✓</span>';
+//     }
+//   }
+// }, 10, 2);
+
+// // Make the column sortable
+// add_filter('manage_edit-page_sortable_columns', function($columns) {
+//   $columns['main_festival_page'] = 'main_festival_page';
+//   return $columns;
+// });
+
+// // Handle the sorting
+// add_action('pre_get_posts', function($query) {
+//   if (!is_admin() || !$query->is_main_query()) {
+//     return;
+//   }
+
+//   if ($query->get('orderby') === 'main_festival_page') {
+//     $query->set('meta_key', 'main_festival_page');
+//     $query->set('orderby', 'meta_value_num');
+//   }
+// });
+
+// Add post state label for main festival pages
+add_filter('display_post_states', function ($post_states, $post) {
+  if ($post->post_type === 'page') {
+    $is_main_festival_page = get_field('main_festival_page', $post->ID);
+    if ($is_main_festival_page) {
+      $post_states['main_festival_page'] = __('Festivalside', 'matfest');
+    }
+  }
+  return $post_states;
+}, 10, 2);
+
+
+
+// ------------ Populate ACF select field with available menus ------------
+
+add_filter('acf/load_field/name=festival_select_menu', function ($field) {
+  $field['choices'] = [];
+  $menus = get_terms('nav_menu', ['hide_empty' => true]);
+  foreach ($menus as $menu) {
+    $field['choices'][$menu->term_id] = $menu->name;
+  }
+  return $field;
+});
+
+// ------------ Festival page detection and overrides ------------
+
+/**
+ * Get the current festival page ID based on current page or ancestors
+ * @return int|null Festival page ID or null
+ */
+function get_current_festival_page()
+{
+  static $festival_page_id = null;
+
+  // Cache the result so we don't query multiple times per request
+  if ($festival_page_id !== null) {
+    return $festival_page_id ?: null;
+  }
+
+  $current_page_id = get_queried_object_id();
+
+  // Check if current page is a festival page
+  if (get_field('main_festival_page', $current_page_id)) {
+    $festival_page_id = $current_page_id;
+    return $festival_page_id;
+  }
+
+  // Check ancestors
+  $ancestors = get_post_ancestors($current_page_id);
+  if (!empty($ancestors)) {
+    foreach ($ancestors as $ancestor_id) {
+      if (get_field('main_festival_page', $ancestor_id)) {
+        $festival_page_id = $ancestor_id;
+        return $festival_page_id;
+      }
+    }
+  }
+
+  $festival_page_id = false; // Cache negative result
+  return null;
+}
+
+/**
+ * Override the main menu with festival menu for festival pages and their descendants
+ * This ensures both desktop and mobile menus use the correct festival menu
+ */
+add_filter('theme_mod_nav_menu_locations', function ($locations) {
+  if (is_admin()) {
+    return $locations;
+  }
+
+  $festival_page_id = get_current_festival_page();
+
+  // If we're on a festival page or descendant, override the menu
+  if ($festival_page_id) {
+    $festival_menu_id = get_field('festival_select_menu', $festival_page_id);
+    if ($festival_menu_id) {
+      // Override all menu locations with the festival menu
+      foreach ($locations as $location => $menu_id) {
+        $locations[$location] = $festival_menu_id;
+      }
+    }
+  }
+
+  return $locations;
+});
+
+/**
+ * Output custom CSS for festival pages based on color settings
+ */
+add_action('wp_head', function () {
+  if (is_admin()) {
+    return;
+  }
+
+  $festival_page_id = get_current_festival_page();
+
+  if (!$festival_page_id) {
+    return;
+  }
+
+  $main_color = get_field('festival_main_color', $festival_page_id);
+  $text_color = get_field('festival_text_color', $festival_page_id);
+
+  if (!$main_color) {
+    return;
+  }
+
+  // Convert text_color field value to actual color
+  $text_color_value = ($text_color === 'white') ? '#ffffff' : '#000000';
+  $border_color_value = ($text_color === 'white') ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.15)';
+
+?>
+  <style id="festival-custom-colors">
+    #grve-main-header,
+    #grve-hidden-menu,
+    #grve-responsive-header #grve-main-responsive-header,
+    #grve-header .grve-main-menu .grve-wrapper>ul>li ul,
+    #grve-header .grve-main-menu .grve-wrapper>ul>li ul li a:hover,
+    #grve-header .grve-main-menu .grve-wrapper>ul>li ul li.current-menu-item>a,
+    #grve-header .grve-main-menu .grve-wrapper>ul li li.current-menu-ancestor>a {
+      background-color: <?= esc_attr($main_color); ?> !important;
+    }
+
+    #grve-header .grve-main-menu .grve-wrapper>ul>li>a,
+    .grve-header-element>a,
+    #grve-hidden-menu a,
+    #grve-hidden-menu .grve-close-btn,
+    #grve-header .grve-main-menu .grve-wrapper>ul>li ul li.current-menu-item>a,
+    #grve-header .grve-main-menu .grve-wrapper > ul > li ul li a,
+    .grve-slide-menu ul.grve-menu .grve-arrow::after {
+      color: <?= esc_attr($text_color_value); ?> !important;
+    }
+
+    #grve-hidden-menu .grve-hiddenarea-content .grve-menu>li>a,
+    #grve-hidden-menu ul.grve-menu li a {
+      border-color: <?= esc_attr($border_color_value); ?> !important;
+    }
+
+    #grve-header .grve-main-menu.grve-menu-type-underline .grve-wrapper>ul>li>a .grve-item:after {
+      background-color: <?= esc_attr($text_color_value); ?> !important;
+    }
+
+    #grve-responsive-header .grve-header-elements-wrapper .grve-menu-btn span {
+      background-color: <?= esc_attr($text_color_value); ?> !important;
+    }
+  </style>
+<?php
+}, 100);
+
+// ------------ Festival Home Page Redirect ------------
+
+/**
+ * Get the active festival page based on current date
+ * @return int|null Festival page ID or null
+ */
+function get_active_festival_page()
+{
+  $today = current_time('Ymd'); // WordPress time in YYYYMMDD format
+
+  $festival_pages = get_posts([
+    'post_type' => 'page',
+    'posts_per_page' => -1,
+    'meta_query' => [
+      [
+        'key' => 'main_festival_page',
+        'value' => '1',
+        'compare' => '='
+      ]
+    ],
+    'orderby' => 'menu_order',
+    'order' => 'ASC'
+  ]);
+
+  if (empty($festival_pages)) {
+    return null;
+  }
+
+  foreach ($festival_pages as $page) {
+    $start_date = get_field('festival_start_date', $page->ID);
+    $end_date = get_field('festival_end_date', $page->ID);
+
+    if (empty($start_date) || empty($end_date)) {
+      continue;
+    }
+
+    // Dates are already in YYYYMMDD format (Ymd), compare directly
+    if ($today >= $start_date && $today <= $end_date) {
+      return $page->ID;
+    }
+  }
+
+  // No active festival found, look for the next upcoming festival
+  foreach ($festival_pages as $page) {
+    $start_date = get_field('festival_start_date', $page->ID);
+
+    if (empty($start_date)) {
+      continue;
+    }
+
+    // Check if start date is in the future
+    if ($today < $start_date) {
+      return $page->ID;
+    }
+  }
+
+  // Fallback: return the first festival page
+  return $festival_pages[0]->ID;
+}
+
+/**
+ * Redirect home page to active festival
+ */
+add_action('template_redirect', function () {
+  // Don't redirect if:
+  // - In admin, customizer, or preview mode
+  // - User is logged in and can edit pages (allows admins to view/edit front page)
+  // - URL has ?no-redirect parameter for testing
+  if (
+    is_front_page()
+    && !is_admin()
+    && !is_customize_preview()
+    && !is_preview()
+    && !(current_user_can('edit_pages') && is_user_logged_in())
+    && !isset($_GET['no-redirect'])
+  ) {
+
+    $active_festival = get_active_festival_page();
+    if ($active_festival) {
+      // Use 302 (temporary redirect) so search engines know this changes
+      wp_redirect(get_permalink($active_festival), 302);
+      exit;
+    }
+  }
 });

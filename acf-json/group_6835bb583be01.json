@@ -1,7 +1,25 @@
 {
     "key": "group_6835bb583be01",
-    "title": "Spilleplan innstillinger",
+    "title": "Site options",
     "fields": [
+        {
+            "key": "field_692ef63b8ea73",
+            "label": "Spilleplan",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
         {
             "key": "field_6835bb5882272",
             "label": "Tidspunkt start",
@@ -55,7 +73,8 @@
             "display_format": "d.m.Y",
             "return_format": "Ymd",
             "first_day": 1,
-            "allow_in_bindings": 0
+            "allow_in_bindings": 0,
+            "default_to_current_date": 0
         }
     ],
     "location": [
@@ -76,5 +95,6 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1755769230
+    "display_title": "",
+    "modified": 1764685388
 }

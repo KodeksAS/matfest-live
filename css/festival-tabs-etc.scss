@@ -1,0 +1,92 @@
+@media only screen and (min-width: 1270px) {
+
+  #grve-main-header,
+  #grve-header {
+    height: 160px !important;
+  }
+
+  #grve-header {
+    height: 160px !important;
+  }
+
+  #grve-header.grve-sticky-header #grve-main-header.grve-shrink-sticky,
+  #grve-header.grve-sticky-header #grve-main-header.grve-advanced-sticky {
+    height: 110px !important;
+  }
+}
+
+@media only screen and (max-width: 1269) {
+  #grve-main-header,
+  #grve-header {
+    height: 114px !important;
+  }
+  #grve-header {
+    height: 114px !important;
+  }
+}
+
+.grve-logo .grve-wrapper {
+  transform: translateY(-50%);
+}
+
+
+
+
+
+header#grve-header {
+
+  .grve-logo .grve-wrapper img {
+    top: initial;
+  }
+
+  .festival-tabs-wrapper {
+    padding-top: 10px;
+    background: #1a363b;
+    color: #fff;
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: flex-end;
+      gap: 10px;
+
+      li {
+        &.active {
+          a {
+            background-color: var(--festival-color, rgba(217, 107, 97, 1));
+            color: var(--festival-text-color, #000);
+          }
+        }
+
+        a {
+          color: inherit;
+          display: block;
+          text-decoration: none;
+          padding: 3px 16px;
+        }
+      }
+
+
+    }
+  }
+
+  // Mobile festival tabs styles
+  #festival-tabs-mobile-container {
+    .festival-tabs-wrapper {
+      ul {
+        gap: 5px;
+
+        li {
+          a {
+            padding: 0 10px;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+
+}
