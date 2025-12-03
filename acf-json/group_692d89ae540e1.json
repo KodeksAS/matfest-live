@@ -219,27 +219,6 @@
             "placeholder": "",
             "create_options": 0,
             "save_options": 0
-        },
-        {
-            "key": "field_692ef5968de26",
-            "label": "Festival kortnavn (mobil)",
-            "name": "festival_short_name",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "Valgfri",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "allow_in_bindings": 0,
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
         }
     ],
     "location": [
@@ -261,5 +240,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1764685253
+    "modified": 1764771138
 }

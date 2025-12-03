@@ -288,10 +288,6 @@ if ('1' == $movedo_grve_header_sticky_devices_enabled) {
                     // Get the main color and text color from this festival page
                     $main_color = get_field('festival_main_color', $page_id);
                     $text_color = get_field('festival_text_color', $page_id);
-                    
-                    // Get short name if available, otherwise use full title
-                    $short_name = get_field('festival_short_name', $page_id);
-                    $display_name = !empty($short_name) ? $short_name : get_the_title($page_id);
                   ?>
                     <li class="<?= $is_active ? 'active' : ''; ?>"<?php 
                       if ($is_active && $main_color) {
@@ -299,7 +295,7 @@ if ('1' == $movedo_grve_header_sticky_devices_enabled) {
                       }
                     ?>>
                       <a href="<?= get_the_permalink($page_id); ?>">
-                        <?= esc_html($display_name); ?>
+                        <?= get_the_title($page_id); ?>
                       </a>
                     </li>
                   <?php endwhile; 
