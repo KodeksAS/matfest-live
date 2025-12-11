@@ -300,6 +300,28 @@ function kodeks_post_types()
       'menu_icon' => 'dashicons-food',
     )
   );
+
+  // Taxonomies:
+  register_taxonomy(
+    'restaurant_category',
+    array('restauranter'),
+    [
+      'label' => __('Restaurant category'),
+      'hierarchical' => true,
+      'public' => true,
+      'show_ui' => true,
+      'show_in_menu' => true,
+      'show_in_nav_menus' => false,
+      'show_tagcloud' => false,
+      'show_admin_column' => true,
+      'hierarchical' => true,
+      'rewrite' => false, // No archive/URL for taxonomy
+      'show_admin_column' => true,
+      'show_in_rest' => true,
+    ]
+  );
+
+
 }
 add_action('init', 'kodeks_post_types');
 
@@ -361,7 +383,8 @@ add_action('manage_posts_custom_column', 'spilleplan_date_column_content', 10, 2
 // ------------ Fix WPPM Element for WPBakery Editor ------------
 
 add_action('vc_after_init', 'fix_wppm_element_params');
-function fix_wppm_element_params() {
+function fix_wppm_element_params()
+{
   // Check if wppm element exists and modify it
   if (function_exists('vc_add_param')) {
     // Try to add el_class parameter to wppm element
@@ -454,7 +477,7 @@ add_shortcode('custom_post_grid', function ($atts) {
   if (!empty($atts['css'])) {
     $wrapper_classes[] = vc_shortcode_custom_css_class($atts['css']);
   }
-  
+
   $output = '<div class="' . esc_attr(implode(' ', $wrapper_classes)) . '">';
   foreach ($items as $item) {
     $img_html = '';
@@ -544,7 +567,7 @@ add_shortcode('spilleplan_element', function ($atts) {
   if (!empty($atts['css'])) {
     $wrapper_classes[] = vc_shortcode_custom_css_class($atts['css']);
   }
-  
+
   ob_start();
   echo '<div class="' . esc_attr(implode(' ', $wrapper_classes)) . '">';
   get_template_part('part-spilleplan');
@@ -726,7 +749,7 @@ add_action('wp_head', function () {
     #grve-hidden-menu a,
     #grve-hidden-menu .grve-close-btn,
     #grve-header .grve-main-menu .grve-wrapper>ul>li ul li.current-menu-item>a,
-    #grve-header .grve-main-menu .grve-wrapper > ul > li ul li a,
+    #grve-header .grve-main-menu .grve-wrapper>ul>li ul li a,
     .grve-slide-menu ul.grve-menu .grve-arrow::after {
       color: <?= esc_attr($text_color_value); ?> !important;
     }
@@ -821,10 +844,10 @@ add_action('template_redirect', function () {
   if (!is_front_page() || is_admin() || is_customize_preview() || is_preview()) {
     return;
   }
-  
+
   // Check if redirect should be disabled for logged-in users
   $disable_redirect_logged_in = get_field('disable_festival_redirect_while_logged_in', 'option');
-  
+
   // Don't redirect if:
   // - Option is enabled AND user is logged in with edit permissions
   // - URL has ?no-redirect parameter for testing
