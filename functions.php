@@ -366,7 +366,7 @@ function custom_post_grid_vc_element()
   vc_map(array(
     'name' => __('Custom Post Grid', 'matfest'),
     'base' => 'custom_post_grid',
-    'icon' => plugins_url('wp-post-modules/assets/images/wppm.svg'), // Use custom SVG icon from plugin
+    'icon' => 'icon-wpb-grid',
     'category' => __('Content', 'js_composer'),
     'params' => array(
       array(
@@ -399,6 +399,19 @@ function custom_post_grid_vc_element()
           ),
         ),
       ),
+      array(
+        'type' => 'textfield',
+        'heading' => __('Extra class name', 'matfest'),
+        'param_name' => 'el_class',
+        'description' => __('Style particular content element differently - add a class name and refer to it in custom CSS.', 'matfest'),
+        'group' => __('Design Options', 'matfest'),
+      ),
+      array(
+        'type' => 'css_editor',
+        'heading' => __('CSS box', 'matfest'),
+        'param_name' => 'css',
+        'group' => __('Design Options', 'matfest'),
+      ),
     )
   ));
 }
@@ -406,12 +419,23 @@ function custom_post_grid_vc_element()
 add_shortcode('custom_post_grid', function ($atts) {
   $atts = shortcode_atts(array(
     'items' => '',
+    'el_class' => '',
+    'css' => '',
   ), $atts);
 
   $items = vc_param_group_parse_atts($atts['items']);
   if (!$items) return '';
 
-  $output = '<div class="custom-post-grid">';
+  // Build wrapper classes
+  $wrapper_classes = array('custom-post-grid');
+  if (!empty($atts['el_class'])) {
+    $wrapper_classes[] = $atts['el_class'];
+  }
+  if (!empty($atts['css'])) {
+    $wrapper_classes[] = vc_shortcode_custom_css_class($atts['css']);
+  }
+  
+  $output = '<div class="' . esc_attr(implode(' ', $wrapper_classes)) . '">';
   foreach ($items as $item) {
     $img_html = '';
     if (!empty($item['image'])) {
@@ -457,6 +481,7 @@ function vc_spilleplan_element()
   vc_map(array(
     'name' => __('Spilleplan', 'matfest'),
     'base' => 'spilleplan_element',
+    'icon' => 'icon-wpb-layout_sidebar',
     'category' => __('Content', 'js_composer'),
     'description' => __('Setter inn spilleplanen', 'matfest'),
     'params' => array(
@@ -468,13 +493,42 @@ function vc_spilleplan_element()
         'description' => '<div class="vc_message_box vc_message_box-info">Dette elementet setter inn spilleplanen på denne siden. Innhold legges inn på hvert arrangement.</div>',
         'edit_field_class' => 'vc_col-sm-12',
       ),
+      array(
+        'type' => 'textfield',
+        'heading' => __('Extra class name', 'matfest'),
+        'param_name' => 'el_class',
+        'description' => __('Style particular content element differently - add a class name and refer to it in custom CSS.', 'matfest'),
+        'group' => __('Design Options', 'matfest'),
+      ),
+      array(
+        'type' => 'css_editor',
+        'heading' => __('CSS box', 'matfest'),
+        'param_name' => 'css',
+        'group' => __('Design Options', 'matfest'),
+      ),
     ),
   ));
 }
 
 add_shortcode('spilleplan_element', function ($atts) {
+  $atts = shortcode_atts(array(
+    'el_class' => '',
+    'css' => '',
+  ), $atts);
+
+  // Build wrapper classes
+  $wrapper_classes = array('spilleplan-wrapper');
+  if (!empty($atts['el_class'])) {
+    $wrapper_classes[] = $atts['el_class'];
+  }
+  if (!empty($atts['css'])) {
+    $wrapper_classes[] = vc_shortcode_custom_css_class($atts['css']);
+  }
+  
   ob_start();
+  echo '<div class="' . esc_attr(implode(' ', $wrapper_classes)) . '">';
   get_template_part('part-spilleplan');
+  echo '</div>';
   return ob_get_clean();
 });
 
