@@ -715,7 +715,10 @@ function get_active_festival_page()
     }
   }
 
-  // No active festival found, look for the next upcoming festival
+  // No active festival found, look for the CLOSEST upcoming festival
+  $closest_festival = null;
+  $closest_date = null;
+
   foreach ($festival_pages as $page) {
     $start_date = get_field('festival_start_date', $page->ID);
 
@@ -725,36 +728,43 @@ function get_active_festival_page()
 
     // Check if start date is in the future
     if ($today < $start_date) {
-      return $page->ID;
+      // Keep track of the festival with the earliest start date
+      if ($closest_date === null || $start_date < $closest_date) {
+        $closest_date = $start_date;
+        $closest_festival = $page->ID;
+      }
     }
   }
 
-  // Fallback: return the first festival page
-  return $festival_pages[0]->ID;
+  // Return the closest upcoming festival, or fallback to first festival
+  return $closest_festival ?: $festival_pages[0]->ID;
 }
 
 /**
  * Redirect home page to active festival
  */
 add_action('template_redirect', function () {
+  if (!is_front_page() || is_admin() || is_customize_preview() || is_preview()) {
+    return;
+  }
+  
+  // Check if redirect should be disabled for logged-in users
+  $disable_redirect_logged_in = get_field('disable_festival_redirect_while_logged_in', 'option');
+  
   // Don't redirect if:
-  // - In admin, customizer, or preview mode
-  // - User is logged in and can edit pages (allows admins to view/edit front page)
+  // - Option is enabled AND user is logged in with edit permissions
   // - URL has ?no-redirect parameter for testing
   if (
-    is_front_page()
-    && !is_admin()
-    && !is_customize_preview()
-    && !is_preview()
-    && !(current_user_can('edit_pages') && is_user_logged_in())
-    && !isset($_GET['no-redirect'])
+    ($disable_redirect_logged_in && current_user_can('edit_pages') && is_user_logged_in())
+    || isset($_GET['no-redirect'])
   ) {
+    return;
+  }
 
-    $active_festival = get_active_festival_page();
-    if ($active_festival) {
-      // Use 302 (temporary redirect) so search engines know this changes
-      wp_redirect(get_permalink($active_festival), 302);
-      exit;
-    }
+  $active_festival = get_active_festival_page();
+  if ($active_festival) {
+    // Use 302 (temporary redirect) so search engines know this changes
+    wp_redirect(get_permalink($active_festival), 302);
+    exit;
   }
 });

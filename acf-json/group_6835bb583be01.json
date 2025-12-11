@@ -3,6 +3,45 @@
     "title": "Site options",
     "fields": [
         {
+            "key": "field_693aa05d06186",
+            "label": "Festivalsider",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_693aa07206187",
+            "label": "Skru av redirect når logget inn",
+            "name": "disable_festival_redirect_while_logged_in",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
+        },
+        {
             "key": "field_692ef63b8ea73",
             "label": "Spilleplan",
             "name": "",
@@ -96,5 +135,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1764685388
+    "modified": 1765449883
 }
