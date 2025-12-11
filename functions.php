@@ -358,6 +358,26 @@ function add_spilleplan_date_column($columns)
 add_filter('manage_posts_columns', 'add_spilleplan_date_column');
 add_action('manage_posts_custom_column', 'spilleplan_date_column_content', 10, 2);
 
+// ------------ Fix WPPM Element for WPBakery Editor ------------
+
+add_action('vc_after_init', 'fix_wppm_element_params');
+function fix_wppm_element_params() {
+  // Check if wppm element exists and modify it
+  if (function_exists('vc_add_param')) {
+    // Try to add el_class parameter to wppm element
+    try {
+      vc_add_param('wppm', array(
+        'type' => 'textfield',
+        'heading' => __('Extra class name', 'matfest'),
+        'param_name' => 'el_class',
+        'description' => __('Style particular content element differently - add a class name and refer to it in custom CSS.', 'matfest'),
+      ));
+    } catch (Exception $e) {
+      // Parameter might already exist, that's okay
+    }
+  }
+}
+
 // ------------ VC Custom Element ------------
 
 add_action('vc_before_init', 'custom_post_grid_vc_element');
