@@ -26,11 +26,6 @@
                 "param": "post_type",
                 "operator": "==",
                 "value": "portfolio"
-            },
-            {
-                "param": "post_taxonomy",
-                "operator": "==",
-                "value": "portfolio_category:forside"
             }
         ]
     ],
@@ -43,5 +38,6 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1748423861
+    "display_title": "",
+    "modified": 1765975066
 }
